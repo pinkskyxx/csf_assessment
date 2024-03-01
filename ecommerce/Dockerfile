@@ -1,24 +1,33 @@
+FROM node:21 AS ng-builder
+
+RUN npm i -g @angular/cli
+
+WORKDIR /ngapp
+
+COPY client/package*.json .
+COPY client/angular.json .
+COPY client/tsconfig.* .
+COPY client/src src
+
+RUN npm ci && ng build
+
+# /ngapp/dist/frontend/browser/*
+
 # Starting with this Linux server
-FROM maven:3-eclipse-temurin-21 AS builder
+FROM maven:3-eclipse-temurin-21 AS sb-builder
 
 ## Build the application
-# Create a directory call /app
+# Create a directory call /sbapp
 # go into the directory cd /app
-WORKDIR /app
+WORKDIR /sbapp
 
-# everything after this is in /app
-
-# COPY server/mvnw .
-# COPY server/mvnw.cmd .
-# COPY server/pom.xml .
-# COPY server/.mvn .mvn
-# COPY server/src src
-
+# everything after this is in /sbapp
 COPY mvnw .
 COPY mvnw.cmd .
 COPY pom.xml .
 COPY .mvn .mvn
 COPY src src
+COPY --from=ng-builder /ngapp/dist/client-side src/main/resources/static
 
 # Build the application
 RUN mvn package -Dmaven.test.skip=true
@@ -27,18 +36,20 @@ FROM openjdk:21-jdk-bullseye
 
 WORKDIR /app 
 
-COPY --from=builder /app/target/ecommerce-0.0.1-SNAPSHOT.jar askhelp.jar
+COPY --from=sb-builder /sbapp/target/ecommerce-0.0.1-SNAPSHOT.jar app.jar
 
 ## Run the application
 # Define environment variable 
 ENV PORT=8080
-ENV S3_KEY_ACCESS=
-ENV S3_KEY_SECRET=
-ENV S3_BUCKET_ENDPOINT=
-ENV S3_BUCKET_REGION=
+# ENV S3_KEY_ACCESS=
+# ENV S3_KEY_SECRET=
+# ENV S3_BUCKET_ENDPOINT=
+# ENV S3_BUCKET_REGION=
 ENV SPRING_DATA_MONGODB_URI=${MONGODB_URL}
+ENV SPRING_DATASOOURCE_URL=jdbc:${MYSQL_URL}
+
 # Expose the port
 EXPOSE ${PORT}
 
 # Run the program
-ENTRYPOINT SERVER_PORT=${PORT} java -jar askhelp.jar
+ENTRYPOINT SERVER_PORT=${PORT} java -jar app.jar

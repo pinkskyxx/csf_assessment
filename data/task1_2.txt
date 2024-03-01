@@ -2,10 +2,9 @@ TODO Task 1
 
 Write the command to import products.csv into Mongo in this file
 
+to railway:
+mongoimport --uri="mongodb://mongo:5ae13H4B6h46cA4ea-F4AdAd64dG3bcb@viaduct.proxy.rlwy.net:55229/products?authSource=admin" --db products --collection products --type csv --file products.csv --he
+aderline
 
+to localhost:
 mongoimport --host localhost --port 27017 --db products --collection products --type csv --file products.csv --headerline
-
-C:\Apryl 4 CSF Visa\data>mongoimport --host localhost --port 27017 --db products --collection products --type csv --file products.csv --headerline
-2024-03-01T09:48:53.915+0800    connected to: mongodb://localhost:27017/
-2024-03-01T09:48:54.560+0800    8208 document(s) imported successfully. 0 document(s) failed to import.
-
