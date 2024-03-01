@@ -32,18 +32,33 @@ public class OrderController {
 
 
  @PostMapping(path="/Order")
- public ResponseEntity<String> postOrder(@RequestBody Order order) {
+ public ResponseEntity<String> postOrder(
+  		@RequestPart("address") String address,
+  		@RequestPart("comments") String comments,
+      		@RequestPart("name") String name
+
+ ) {
         System.out.println("Receive");
-        System.out.println(order);
+        System.out.println(address);
   return null;
  }
 
+
+//  @PostMapping(path="/Order")
+//  public ResponseEntity<String> postOrder(@RequestBody Order order) {
+//         System.out.println("Receive");
+//         System.out.println(order);
+//   return null;
+//  }
   // 	@PostMapping(
 	// 	path = "/Order"
 	// )
   // public ResponseEntity<String> postOrder(
 	// 	@RequestPart("address") String address,
-  //   @RequestPart("address") String address,
+  	// 	@RequestPart("comments") String address,
+      	// 	@RequestPart("name") String address,
+
+
 
 	// 	@RequestPart("description") String description, 
 

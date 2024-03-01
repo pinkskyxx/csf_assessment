@@ -30,7 +30,19 @@ export class ProductService {
   //   // TODO Task 3
   // }
 
+  //test send
   public checkout(order: Order): Observable<Order> {
+    const formData = new FormData();
+    formData.set('address', order.address);
+    // formData.set('cart', order.cart as any);
+    formData.set('comments', order.comments);
+    formData.set('name', order.name);
+    // formData.set('priority', order.priority as any);
+    return this.http.post<Order>(`/api/Order`, formData);
+  }
+
+  //actual send
+  public checkout1(order: Order): Observable<Order> {
     const formData = new FormData();
     formData.set('address', order.address);
     formData.set('cart', order.cart as any);
