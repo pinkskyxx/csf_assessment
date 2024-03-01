@@ -1,0 +1,106 @@
+<h2>Checkout</h2>
+
+<form [formGroup]="form" (submit)="process()">
+<!-- <form> -->
+  <table>
+
+
+    <tr>
+      <td>Name:</td>
+      <td>
+        <input type="text" size="30" id="name" formControlName="name">
+        <ng-container *ngIf="myname.dirty || myname.touched">
+          <small class="text-danger" *ngIf="myname.getError('required')">Name is required</small>
+        </ng-container>
+      </td>
+    </tr>
+    <tr>
+      <td>Address: </td>
+      <td>
+        <input type="text" size="30" id="address" formControlName="address">
+        <ng-container *ngIf="myaddress.dirty || myaddress.touched">
+          <small class="text-danger" *ngIf="myaddress.getError('required')">Address is required</small>
+          <small class="text-danger" *ngIf="myaddress.getError('minlength')">At least 3 characters long</small>
+
+        </ng-container>
+      </td>
+    </tr>
+    <tr>
+      <td>Priority: </td>
+      <td>
+        <input type="checkbox"  id="priority" formControlName="priority">
+      </td>
+    </tr>
+    <tr>
+      <td>Comments: </td>
+      <td>
+        <textarea cols="30" rows="4" id="comment" formControlName="comment"></textarea>
+      </td>
+    </tr>
+    <tr>
+      <td></td>
+      <td>
+        <button type="submit" [disabled]="form.invalid">Place Order</button>
+      </td>
+    </tr>
+  </table>
+</form>
+
+
+<hr>
+<div *ngIf="Citems$ | async as items">
+  <table border="1" >
+    <thead>
+      <tr>
+        <th>name</th>
+        <th>Price</th>
+        <th>quantity</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let e of items; let i = index">
+        <td> {{ e.name }}</td>
+        <td> {{ e.price }}</td>
+        <td> {{ e.quantity }}</td>
+
+        <!-- <td>
+          <button type="button" class="btn btn-outline-secondary btn-sm me-1" (click)="removeTagA(e)">X</button>
+        </td> -->
+      </tr>
+
+    </tbody>
+    <tfoot>
+      <tr>
+
+        <td colspan="2">Total Price:</td>
+        <td>{{ getTotalPrice(items) }}</td>
+      </tr>
+    </tfoot>
+  </table>
+
+  <!-- Total items: {{ items.length }} -->
+  </div>
+
+<hr>
+
+<!-- <table border="1">
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Price</th>
+      <th>Quantity</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td> Apple </td>
+      <td> 0.5 </td>
+      <td> 6 </td>
+    </tr>
+  </tbody>
+  <tfoot>
+    <td></td>
+    <td>Total: </td>
+    <td> 100 </td>
+  </tfoot>
+</table> -->

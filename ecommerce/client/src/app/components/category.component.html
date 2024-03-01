@@ -1,0 +1,60 @@
+<h2>Products for {{ category }}</h2>
+
+<div *ngIf="products$ | async as products">
+  <div *ngIf="products.length > 0">
+    <div *ngFor="let p of products" class="prod-order">
+      <div class="prod">
+        <div>
+          <img [src]="p.image" width="100">
+        </div>
+        <div class="prod-detail">
+          Name: <span>{{ p.name }}</span>
+          Brand: <span>{{ p.brand }}</span>
+          Price: <span>{{ p.price | currency:"INR" }}</span>
+          Discount: <span>{{ p.discountPrice | currency:"INR" }}</span>
+          Quantity: <span>{{ p.quantity }}</span>
+        </div>
+      </div>
+      <div class="order-form">
+        <app-order-form [productId]="p.prodId"
+                        [nameId]="p.name"
+                        [priceId]="p.price"
+                        [quantityId]="p.quantity"/>
+      </div>
+    </div>
+  </div>
+  <div *ngIf="products.length <= 0">
+    <h3>No products found in this category</h3>
+  </div>
+</div>
+
+
+<hr>
+<div *ngIf="Citems$ | async as items">
+  <table border="1" >
+    <thead>
+      <tr>
+        <th>prodId</th>
+        <th>name</th>
+        <th>quantity</th>
+        <th>Price</th>
+        <th>Del</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let e of items; let i = index">
+        <td> {{ e.prodId}}</td>
+        <td> {{ e.name }}</td>
+        <td> {{ e.quantity }}</td>
+        <td> {{ e.price }}</td>
+        <td>
+          <button type="button" class="btn btn-outline-secondary btn-sm me-1" (click)="removeTagA(e)">X</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+  Total items: {{ items.length }}
+  </div>
+
+
+<!-- <app-side-store></app-side-store> -->
